@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>@Yhsanave</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Yhsanave's Links">
+    <meta property="og:site_name" content="Yhsanave's Links">
+    <meta property="og:title" content="Yhsanave's Links">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Yhsanave's Links">
+    <!-- <meta property="og:image" content="">
+    <meta property="og:image:type" content="">
+    <meta property="og:image:width" content="">
+    <meta property="og:image:height" content=""> -->
+    <meta property="og:url" content="https://yhsanave.me">
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:site" content="@Yhsanave">
+    <link rel="canonical" href="https://yhsanave.me/">
+    <link rel="stylesheet" href="./new.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+</head>
+
+<div id="magicWrapper" class="magic-wrapper">
+    <div id="title" class="wave">
+        <span id="scaleChar" class="cursor">█</span>
+    </div>
+</div>
+
+<script>
+    const title = '@Yhsanave';
+    const titlePalettes = [
+        ['#e28c00', '#e28c00', '#eccd00', '#eccd00', '#ffffff', '#62aedc', '#62aedc', '#203856', '#203856']
+    ];
+    const titlePalette = _.sample(titlePalettes);
+
+    const magicGrid = {rows: 0, columns: 0};
+    
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-=+[]\\/:<>;{}|~?';
+    const randChar = () => characters.charAt(Math.floor(Math.random() * characters.length));
+    
+    const links = [
+        {id: 'discord', href: 'https://discord.com/users/195694396115648512', text: ['Discord']},
+        {id: 'twitter', href: 'https://twitter.yhsanave.me', text: ['Twitter']},
+        {id: 'youtube', href: 'https://youtube.yhsanave.me/', text: ['You','Tube']},
+        {id: 'anilist', href: 'https://anilist.yhsanave.me/', text: ['Ani','List']},
+        {id: 'libib', href: 'https://yhsanave.libib.com/', text: ['Manga']},
+        {id: 'steam', href: 'https://steamcommunity.com/id/yhsanave/', text: ['Steam']},
+        {id: 'github', href: 'https://github.com/yhsanave', text: ['Github']},
+        {id: 'mail', href: 'mailto:yhsanave@yhsanave.me', text: ['Email']},
+        {id: 'venmo', href: 'https://venmo.yhsanave.me/', text: ['Venmo']},
+        {id: 'paypal', href: 'https://paypal.yhsanave.me/', text: ['Pay','Pal']},
+        {id: 'mastodon', href: 'https://mastodon.yhsanave.me/', text: ['Mastodon']},
+        {id: 'tumblr', href: 'https://tumblr.yhsanave.me/', text: ['Tumblr']},
+        {id: 'soundcloud', href: 'https://soundcloud.yhsanave.me/', text: ['SoundCloud']},
+        {id: 'osu', href: 'https://osu.ppy.sh/users/7559714', text: ['osu!']},
+        {id: 'prsk', copyText: '367762770000629763', text: ['PRSK:367762770000629763']},
+        {id: 'switch', copyText: 'SW-0834-7237-5116', text: ['Switch:', 'SW-0834-7237-5116']}
+    ];
+    const linkLength = (link) => link.text.join('').length;
+    
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    const mutationFrequency = 100; // Magic text update frequency in milliseconds
+    const mutationFactor = .02; // Percent of cells to update each cycle
+    const getMutations = () => Math.floor(magicGrid.rows * magicGrid.columns * mutationFactor);
+    const updateInterval = setInterval(() => mutate(getMutations()), mutationFrequency);
+
+    buildGrid();
+    animateIn();
+
+    function buildLink(link) {   
+        let $elem = $(`<a id="link-${link.id}" class="magic-link"></a>`).hide();
+        if (link.href) $elem.prop({'href': link.href, 'target': '_blank'});
+        if (link.copyText) { $elem.click(() => navigator.clipboard.writeText(link.copyText)); $elem.prop({'title': 'Click to Copy'}) };
+        link.text.forEach(s => {
+            let span = $('<span>');
+            span.text(s);
+            $elem.append(span);
+        });
+        return $elem;
+    }
+
+    function buildGrid() {
+        let wrapper = $('#magicWrapper');
+        magicGrid.rows = Math.max(Math.floor(wrapper.innerHeight() / $('#scaleChar').height())-1, links.length+1);
+        magicGrid.columns = Math.floor(wrapper.innerWidth() / $('#scaleChar').width())-1;
+        wrapper.css('grid-template-rows', `repeat(${magicGrid.rows}, 1fr)`);
+        wrapper.css('grid-template-columns', `repeat(${magicGrid.columns}, 1fr)`);
+
+        let linkSpacing = (magicGrid.rows-1) / links.length;
+
+        let linkPositions = {1: {start: 1, end: title.length+1}};
+        links.forEach((link, index) => {
+            let elem = buildLink(link);
+            let row = Math.ceil(linkSpacing * (index + 1));
+            let col = Math.floor(Math.random() * (magicGrid.columns - linkLength(link) - 1) + 1);
+            elem.css({'grid-row-start': row, 'grid-column': `${col} / span ${linkLength(link)}`});
+            wrapper.append(elem);
+            linkPositions[row] = {start: col, end: col+linkLength(link)};
+        });
+        
+        for (let row = 1; row<=magicGrid.rows; row++) {
+            for (let col = 1; col<=magicGrid.columns; col++) {
+                if (col >= linkPositions[row]?.start && col < linkPositions[row]?.end) {
+                    col = linkPositions[row]?.end-1;
+                    continue;
+                }
+                wrapper.append(
+                    $(`<span class='magic-char'>${randChar()}</span>`)
+                    .css({'grid-row': row, 'grid-column': col})
+                    .hide()
+                    );
+            }
+        }
+    }
+    
+    function mutate(strength) {
+        let chars = _.sampleSize($('.magic-char'), strength);
+        chars.forEach((char) => char.innerHTML = randChar());
+    }
+
+    async function animateIn() {
+        await sleep(1000);
+        await animateTitleIn();
+        await sleep(500);
+        $('#scaleChar').hide();
+        await animateMagicTextIn(5, 1000);
+    }
+
+    async function animateTitleIn() {
+        for (let i = 0; i < title.length; i++) {
+            let titleChar = $(`<span id="title_${i}">${title[i]}</span>`).css({'color': titlePalette[i], '--i': i});
+            $('#scaleChar').before(titleChar) ;
+            await sleep(50);
+        }
+        $('#title').css('test-align-last', 'justify');
+    }
+
+    async function animateMagicTextIn(speed, duration) {
+        let magicElements = _.shuffle([...$('.magic-char'), ...$('.magic-link')])
+        let steps = Math.ceil(duration / speed);
+        let perStep = Math.floor(magicElements.length / steps);
+        for (let i = 0; i<magicElements.length; i++) {
+            $(magicElements[i]).show();
+            if (i % perStep === 0) await sleep(speed);
+        }
+    }
+</script>

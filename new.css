@@ -1,0 +1,170 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    color: #666;
+    background-color: black;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+}
+
+.magic-wrapper {
+    font-size: 2em;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    justify-content: stretch;
+}
+
+#title {
+    font-weight: bold;
+    grid-column: auto / span 9;
+    transition: 500ms;
+    text-justify: inter-character;
+}
+
+a {
+    position: relative;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: 200ms;
+    text-align-last: justify;
+    text-justify: inter-character;
+    white-space: nowrap;
+}
+
+a > span {
+    text-align: justify;
+    text-justify: inter-character;
+    transition: 200ms;
+}
+
+a:hover {
+    transform: scale(110%) translateY(-.1em);
+}
+
+.cursor {
+    color: white;
+    animation: cursor 250ms steps(2) 0s 12 alternate backwards;
+}
+
+.wave:hover span {
+    position: relative;
+    display: inline-block;
+    animation: wave 1s ease infinite;
+    animation-delay: calc(.1s * var(--i));
+}
+
+@media (hover: hover) {
+    #title:not(:hover) > span {
+        color: white !important;
+    }
+
+    #link-discord:hover {color: #5865F2;}
+    #link-discord:hover > span {color: #FFFFFF;}
+
+    #link-twitter:hover {color: #00acee;}
+
+    #link-youtube:hover {color: #FFFFFF;}
+    #link-youtube:hover > span:nth-child(1) {color: #FFFFFF;}
+    #link-youtube:hover > span:nth-child(2) {color: #FF0000;}
+
+    #link-anilist:hover {color: #19212d;}
+    #link-anilist:hover > span:nth-child(1) {color: #fefefe;}
+    #link-anilist:hover > span:nth-child(2) {color: #02a9ff;}
+
+    #link-libib:hover {color: #4bc1d2;}
+    #link-libib:hover > span {color: #FFFFFF;}
+
+    #link-steam:hover {color: #ffffff;}
+    #link-steam:hover > span {color: #06bfff;}
+
+    #link-github:hover {color: #6e5494;}
+
+    #link-mail:hover {color: white;}
+
+    #link-venmo:hover {color:  #008cff;}
+
+    #link-paypal:hover {color: #FFFFFF;}
+    #link-paypal:hover > span:nth-child(1) {color: #00457c;}
+    #link-paypal:hover > span:nth-child(2) {color: #0079c1;}
+
+    #link-mastodon:hover {color: #563acc;}
+    #link-mastodon:hover > span {color: #6364FF;}
+
+    #link-tumblr:hover {color: #FFFFFF;}
+    #link-tumblr:hover > span {color: #56bc8a;}
+
+    #link-soundcloud:hover {color: #F26F23;}
+
+    #link-osu:hover {color: #ff79b8;}
+    #link-osu:hover > span {color: #FFFFFF;}
+
+    #link-prsk:hover {color: #07f2ff;}
+
+    #link-switch:hover {color: #fe0016;}
+    #link-switch:hover > span:nth-child(1) {color: #fe0016;}
+    #link-switch:hover > span:nth-child(2) {color: #FFFFFF;}
+}
+
+/* Always show the link colors when on a device that cannot hover */
+@media (hover: none) {
+    a {opacity: .75;}
+
+    #link-discord {color: #5865F2;}
+    #link-discord > span {color: #FFFFFF;}
+
+    #link-twitter {color: #00acee;}
+
+    #link-youtube {color: #FFFFFF;}
+    #link-youtube > span:nth-child(1) {color: #FFFFFF;}
+    #link-youtube > span:nth-child(2) {color: #FF0000;}
+
+    #link-anilist {color: #19212d;}
+    #link-anilist > span:nth-child(1) {color: #fefefe;}
+    #link-anilist > span:nth-child(2) {color: #02a9ff;}
+
+    #link-libib {color: #4bc1d2;}
+    #link-libib > span {color: #FFFFFF;}
+
+    #link-steam {color: #ffffff;}
+    #link-steam > span {color: #06bfff;}
+
+    #link-github {color: #6e5494;}
+
+    #link-mail {color: white;}
+
+    #link-venmo {color:  #008cff;}
+
+    #link-paypal {color: #FFFFFF;}
+    #link-paypal > span:nth-child(1) {color: #00457c;}
+    #link-paypal > span:nth-child(2) {color: #0079c1;}
+
+    #link-mastodon {color: #563acc;}
+    #link-mastodon > span {color: #6364FF;}
+
+    #link-tumblr {color: #FFFFFF;}
+    #link-tumblr > span {color: #56bc8a;}
+
+    #link-soundcloud {color: #F26F23;}
+
+    #link-osu {color: #ff79b8;}
+    #link-osu > span {color: #FFFFFF;}
+
+    #link-prsk {color: #07f2ff;}
+
+    #link-switch {color: #fe0016;}
+    #link-switch > span:nth-child(1) {color: #fe0016;}
+    #link-switch > span:nth-child(2) {color: #FFFFFF;}
+}
+
+@keyframes cursor {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes wave {
+    25% {transform: translateY(.1em);}
+    75% {transform: translateY(-.1em);}
+}
