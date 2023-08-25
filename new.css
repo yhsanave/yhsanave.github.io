@@ -49,12 +49,17 @@ a:hover {
     animation: cursor 250ms steps(2) 0s 12 alternate backwards;
 }
 
-.wave:hover span {
-    position: relative;
-    display: inline-block;
-    animation: wave 1s ease infinite;
-    animation-delay: calc(.1s * var(--i));
+#title.wave:hover span {
+    width: calc(100% / 9);
 }
+
+.wave:hover span {
+        position: relative;
+        display: inline-block;
+        animation: wave 1s ease infinite;
+        animation-delay: calc(.1s * var(--i));
+        text-align-last: justify;    
+    }
 
 @media (hover: hover) {
     #title:not(:hover) > span {

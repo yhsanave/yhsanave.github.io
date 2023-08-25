@@ -90,7 +90,6 @@
         wrapper.css('grid-template-columns', `repeat(${magicGrid.columns}, 1fr)`);
 
         let linkSpacing = (magicGrid.rows-1) / links.length;
-
         let linkPositions = {1: {start: 1, end: title.length+1}};
         links.forEach((link, index) => {
             let elem = buildLink(link);
@@ -135,7 +134,7 @@
             $('#scaleChar').before(titleChar) ;
             await sleep(50);
         }
-        $('#title').css('test-align-last', 'justify');
+        $('#title').css('text-align-last', 'justify');
     }
 
     async function animateMagicTextIn(speed, duration) {
@@ -147,4 +146,13 @@
             if (i % perStep === 0) await sleep(speed);
         }
     }
+
+    function resize() {
+        let wrapper = $('#magicWrapper');
+        wrapper.children().remove('.magic-char, .magic-link');
+        buildGrid();
+        wrapper.children().show();
+    }
+    
+    $(window).on('resize', _.debounce(resize, 50))
 </script>
