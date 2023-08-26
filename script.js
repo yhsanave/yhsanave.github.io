@@ -28,7 +28,7 @@ const links = [
 ];
 const linkLength = (link) => link.text.join('').length;
 
-const minRows = links.length+1;
+const minRows = links.length+2;
 const minColumns = Math.max(...links.map(l => linkLength(l)));
 const magicGrid = {rows: minRows, columns: minColumns};
 
@@ -65,7 +65,7 @@ function buildGrid() {
     wrapper.css('--rows', magicGrid.rows);
     wrapper.css('--columns', magicGrid.columns);
 
-    let linkSpacing = (magicGrid.rows-1) / links.length;
+    let linkSpacing = (magicGrid.rows) / links.length;
     let linkPositions = {1: {start: 1, end: title.length+1}}; // Initialized with the position of the title
     links.forEach((link, index) => {
         let row = Math.ceil(linkSpacing * (index + 1));
@@ -74,7 +74,8 @@ function buildGrid() {
         wrapper.append($link);
         linkPositions[row] = {start: col, end: col+linkLength(link)};
     });
-    
+    console.log(linkSpacing, linkPositions);
+
     for (let row = 1; row<=magicGrid.rows; row++) {
         for (let col = 1; col<=magicGrid.columns; col++) {
             if (col >= linkPositions[row]?.start && col < linkPositions[row]?.end) {
