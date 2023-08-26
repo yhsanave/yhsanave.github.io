@@ -24,7 +24,7 @@ body {
 
 #title {
     font-weight: bold;
-    grid-column: auto / span 9;
+    grid-column: 1 / span 9;
     transition: 500ms;
     text-justify: inter-character;
     transform: translateY(0);
