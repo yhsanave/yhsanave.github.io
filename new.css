@@ -23,11 +23,11 @@ body {
 }
 
 #title {
+    display: contents;
     font-weight: bold;
     grid-row: 1;
     grid-column: 1 / span 9;
     transition: 500ms;
-    text-justify: inter-character;
     transform: translateY(0);
 }
 
@@ -74,6 +74,16 @@ body {
 .cursor {
     color: white;
     animation: cursor 250ms steps(2) 0s 12 alternate backwards;
+}
+
+#scaleChar {
+    display: none;
+    position: fixed;
+    font-size: 2em;
+    bottom: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
 }
 
 #title.wave:hover span {

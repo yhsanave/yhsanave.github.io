@@ -100,14 +100,14 @@ async function animateIn() {
     await sleep(1000);
     await animateTitleIn();
     await sleep(500);
-    $('#scaleChar').hide();
+    $('.cursor').hide();
     await animateMagicTextIn(5, 1000);
 }
 
 async function animateTitleIn() {
     for (let i = 0; i < title.length; i++) {
         let titleChar = $(`<span id="title_${i}">${title[i]}</span>`).css({'color': titlePalette[i], '--i': i});
-        $('#scaleChar').before(titleChar) ;
+        $('.cursor').before(titleChar) ;
         await sleep(50);
     }
     $('#title').css('text-align-last', 'justify');
