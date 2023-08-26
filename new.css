@@ -1,3 +1,5 @@
+@import url(./colors.css);
+
 body {
     font-family: 'Courier New', Courier, monospace;
     color: #666;
@@ -5,6 +7,9 @@ body {
     padding: 0;
     margin: 0;
     height: 100vh;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .magic-wrapper {
@@ -13,6 +18,8 @@ body {
     width: 100%;
     display: grid;
     justify-content: stretch;
+    grid-template-rows: repeat(var(--rows), 1fr);
+    grid-template-columns: repeat(var(--columns), 1fr);
 }
 
 #title {
@@ -20,28 +27,47 @@ body {
     grid-column: auto / span 9;
     transition: 500ms;
     text-justify: inter-character;
+    transform: translateY(0);
 }
 
-a {
+.char {
+    grid-row: var(--row);
+    grid-column: var(--col);
+}
+
+.magic-link {
+    display: contents;
     position: relative;
     font-weight: bold;
-    color: #aaa;
     cursor: pointer;
-    text-decoration: underline;
-    transition: 200ms;
-    text-align-last: justify;
-    text-justify: inter-character;
-    white-space: nowrap;
-}
-
-a > span {
-    text-align: justify;
-    text-justify: inter-character;
     transition: 200ms;
 }
+@media (hover: hover) {
+    .magic-link:not(:hover) > .link-char {
+        color: #aaa !important;
+        text-decoration-color: #aaa !important;
+    }
 
-a:hover {
-    transform: scale(110%) translateY(-.1em);
+    #title:not(:hover) > span {
+        color: white !important;
+    }
+}
+
+.sublink-0 {color: var(--text-color-0)}
+.sublink-1 {color: var(--text-color-1)}
+.sublink-2 {color: var(--text-color-2)}
+.sublink-3 {color: var(--text-color-3)}
+.sublink-4 {color: var(--text-color-4)}
+.sublink-5 {color: var(--text-color-5)}
+
+.magic-link:hover > .link-char {
+    transform: scale(105%) translateY(-.1em);
+}
+
+.link-char {
+    position: relative;
+    text-decoration: underline dotted var(--line-color, currentcolor);
+    transition: 200ms;
 }
 
 .cursor {
@@ -54,114 +80,27 @@ a:hover {
 }
 
 .wave:hover span {
-        position: relative;
-        display: inline-block;
-        animation: wave 1s ease infinite;
-        animation-delay: calc(.1s * var(--i));
-        text-align-last: justify;    
-    }
-
-@media (hover: hover) {
-    #title:not(:hover) > span {
-        color: white !important;
-    }
-
-    #link-discord:hover {color: #5865F2;}
-    #link-discord:hover > span {color: #FFFFFF;}
-
-    #link-twitter:hover {color: #00acee;}
-
-    #link-youtube:hover {color: #FFFFFF;}
-    #link-youtube:hover > span:nth-child(1) {color: #FFFFFF;}
-    #link-youtube:hover > span:nth-child(2) {color: #FF0000;}
-
-    #link-anilist:hover {color: #19212d;}
-    #link-anilist:hover > span:nth-child(1) {color: #fefefe;}
-    #link-anilist:hover > span:nth-child(2) {color: #02a9ff;}
-
-    #link-libib:hover {color: #4bc1d2;}
-    #link-libib:hover > span {color: #FFFFFF;}
-
-    #link-steam:hover {color: #ffffff;}
-    #link-steam:hover > span {color: #06bfff;}
-
-    #link-github:hover {color: #6e5494;}
-
-    #link-mail:hover {color: white;}
-
-    #link-venmo:hover {color:  #008cff;}
-
-    #link-paypal:hover {color: #FFFFFF;}
-    #link-paypal:hover > span:nth-child(1) {color: #00457c;}
-    #link-paypal:hover > span:nth-child(2) {color: #0079c1;}
-
-    #link-mastodon:hover {color: #563acc;}
-    #link-mastodon:hover > span {color: #6364FF;}
-
-    #link-tumblr:hover {color: #FFFFFF;}
-    #link-tumblr:hover > span {color: #56bc8a;}
-
-    #link-soundcloud:hover {color: #F26F23;}
-
-    #link-osu:hover {color: #ff79b8;}
-    #link-osu:hover > span {color: #FFFFFF;}
-
-    #link-prsk:hover {color: #07f2ff;}
-
-    #link-switch:hover {color: #fe0016;}
-    #link-switch:hover > span:nth-child(1) {color: #fe0016;}
-    #link-switch:hover > span:nth-child(2) {color: #FFFFFF;}
+    position: relative;
+    display: inline-block;
+    animation: wave .75s ease-in-out infinite alternate;
+    animation-delay: calc(.1s * var(--i));
+    text-align-last: justify;    
 }
 
-/* Always show the link colors when on a device that cannot hover */
+.float-away span {
+    position: relative;
+    display: inline-block;
+    transition: 1s;
+    transform: translate3d(0px, 0px, 0px) rotate3d(0, 0, 0, 0deg);
+}
+
+.float-away:hover span {
+    transition: transform 5s;
+    transform: translate3d(var(--tx), var(--ty), var(--tz)) rotate3d(var(--rx), var(--ry), var(--rz), var(--ra));
+}
+
 @media (hover: none) {
-    a {opacity: .75;}
-
-    #link-discord {color: #5865F2;}
-    #link-discord > span {color: #FFFFFF;}
-
-    #link-twitter {color: #00acee;}
-
-    #link-youtube {color: #FFFFFF;}
-    #link-youtube > span:nth-child(1) {color: #FFFFFF;}
-    #link-youtube > span:nth-child(2) {color: #FF0000;}
-
-    #link-anilist {color: #19212d;}
-    #link-anilist > span:nth-child(1) {color: #fefefe;}
-    #link-anilist > span:nth-child(2) {color: #02a9ff;}
-
-    #link-libib {color: #4bc1d2;}
-    #link-libib > span {color: #FFFFFF;}
-
-    #link-steam {color: #ffffff;}
-    #link-steam > span {color: #06bfff;}
-
-    #link-github {color: #6e5494;}
-
-    #link-mail {color: white;}
-
-    #link-venmo {color:  #008cff;}
-
-    #link-paypal {color: #FFFFFF;}
-    #link-paypal > span:nth-child(1) {color: #00457c;}
-    #link-paypal > span:nth-child(2) {color: #0079c1;}
-
-    #link-mastodon {color: #563acc;}
-    #link-mastodon > span {color: #6364FF;}
-
-    #link-tumblr {color: #FFFFFF;}
-    #link-tumblr > span {color: #56bc8a;}
-
-    #link-soundcloud {color: #F26F23;}
-
-    #link-osu {color: #ff79b8;}
-    #link-osu > span {color: #FFFFFF;}
-
-    #link-prsk {color: #07f2ff;}
-
-    #link-switch {color: #fe0016;}
-    #link-switch > span:nth-child(1) {color: #fe0016;}
-    #link-switch > span:nth-child(2) {color: #FFFFFF;}
+    .magic-link {opacity: .75;}
 }
 
 @keyframes cursor {
@@ -170,6 +109,6 @@ a:hover {
 }
 
 @keyframes wave {
-    25% {transform: translateY(.1em);}
-    75% {transform: translateY(-.1em);}
+    0% {transform: translateY(-.1em);}
+    100% {transform: translateY(.1em);}
 }

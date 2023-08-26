@@ -1,0 +1,79 @@
+#link-discord {
+    --text-color-0: #5865F2;
+    --line-color: #FFFFFF;
+}
+
+#link-twitter {
+    --text-color-0: #00acee;
+    --line-color: #FFFFFF;
+}
+
+#link-youtube {
+    --line-color: #FFFFFF;
+    --text-color-0: #FFFFFF;
+    --text-color-1: #FF0000;
+}
+
+#link-anilist {
+    --line-color: #19212d;
+    --text-color-0: #fefefe;
+    --text-color-1: #02a9ff;
+}
+
+#link-libib {
+    --line-color: #4bc1d2;
+    --text-color-0: #FFFFFF;
+}
+
+#link-steam {
+    --line-color: #ffffff;
+    --text-color-0: #06bfff;
+}
+
+#link-github {
+    --text-color-0: #6e5494;
+}
+
+#link-mail {
+    --text-color-0: yellow;
+}
+
+#link-venmo {
+    --text-color-0: #008cff;
+}
+
+#link-paypal {
+    --line-color: #FFFFFF;
+    --text-color-0: #00457c;
+    --text-color-1: #0079c1;
+}
+
+#link-mastodon {
+    --line-color: #563acc;
+    --text-color-0: #6364FF;
+}
+
+#link-tumblr {
+    --line-color: #FFFFFF;
+    --text-color-0: #56bc8a;
+}
+
+#link-soundcloud {
+    --text-color-0: #F26F23;
+    --line-color: #FFFFFF;
+}
+
+#link-osu {
+    --line-color: #ff79b8;
+    --text-color-0: #FFFFFF;
+}
+
+#link-prsk {
+    --text-color-0: #00cdba;
+}
+
+#link-switch {
+    --line-color: #fe0016;
+    --text-color-0: #fe0016;
+    --text-color-1: #FFFFFF;
+}
