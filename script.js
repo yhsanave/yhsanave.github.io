@@ -4,7 +4,6 @@ const titlePalettes = [
 ];
 const titlePalette = _.sample(titlePalettes);
 
-
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-=+[]\\/:<>;{}|~?';
 const randChar = () => characters.charAt(Math.floor(rand(characters.length)));
 
@@ -29,8 +28,9 @@ const links = [
 const linkLength = (link) => link.text.join('').length;
 
 const minRows = links.length+2;
-const minColumns = Math.max(...links.map(l => linkLength(l)));
+const minColumns = Math.max(...links.map(l => linkLength(l)))+1;
 const magicGrid = {rows: minRows, columns: minColumns};
+$(':root').css('--ideal-rows', Math.floor(minRows*1.5)) // Try to scale the font so that there are ~50% more rows than links
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const rand = (max, min=0) => Math.random() * (max - min) + min;
@@ -51,6 +51,7 @@ function buildLink(link, row, col) {
             $elem.append($(sp)
                 .addClass(`char link-char sublink-${index}`)
                 .css({'--row': row, '--col': col+i+(link.text[index-1]?.length ?? 0)})
+                .prop({'data-row': row, 'data-col': col})
                 .hide()
             );
         });
@@ -60,10 +61,9 @@ function buildLink(link, row, col) {
 
 function buildGrid() {
     let wrapper = $('#magicWrapper');
-    magicGrid.rows = Math.max(Math.floor(wrapper.innerHeight() / $('#scaleChar').height())-1, minRows);
-    magicGrid.columns = Math.max(Math.floor(wrapper.innerWidth() / $('#scaleChar').width())-1, minColumns);
-    wrapper.css('--rows', magicGrid.rows);
-    wrapper.css('--columns', magicGrid.columns);
+    magicGrid.rows = Math.max(Math.floor(wrapper.height() / $('#scaleChar').height())-1, minRows);
+    magicGrid.columns = Math.max(Math.floor(wrapper.width() / $('#scaleChar').width())-1, minColumns);
+    wrapper.css({'--rows': magicGrid.rows, '--columns': magicGrid.columns});
 
     let linkSpacing = (magicGrid.rows) / links.length;
     let linkPositions = {1: {start: 1, end: title.length+1}}; // Initialized with the position of the title
@@ -74,7 +74,6 @@ function buildGrid() {
         wrapper.append($link);
         linkPositions[row] = {start: col, end: col+linkLength(link)};
     });
-    console.log(linkSpacing, linkPositions);
 
     for (let row = 1; row<=magicGrid.rows; row++) {
         for (let col = 1; col<=magicGrid.columns; col++) {
@@ -83,7 +82,7 @@ function buildGrid() {
                 continue;
             }
             wrapper.append(
-                $(`<span class='char magic-char'>${randChar()}</span>`)
+                $(`<span class='char magic-char' data-row="${row}" data-col="${col}">${randChar()}</span>`)
                 .css({'--row': row, '--col': col})
                 .hide()
             );
@@ -132,8 +131,8 @@ function resize() {
 
 // Float away effect
 const floatAwayOptions = {
-    translate: {min: -50, max: 50},
-    rotate: {min: -5, max: 5},
+    translate: {min: -20, max: 20},
+    rotate: {min: -1, max: 1},
     rotateAngle: {min: -45, max: 45}
 }
 

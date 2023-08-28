@@ -1,23 +1,29 @@
 @import url(./colors.css);
 
-body {
+html {
+    background-color: black;
+    font-size: clamp(1em, calc(100vh/var(--ideal-rows)), 2em);
     font-family: 'Courier New', Courier, monospace;
     color: #666;
-    background-color: black;
-    padding: 0;
-    margin: 0;
-    height: 100vh;
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
 }
 
+body {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+}
+
 .magic-wrapper {
-    font-size: 2em;
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     display: grid;
-    justify-content: stretch;
+    justify-content: center;
     grid-template-rows: repeat(var(--rows), 1fr);
     grid-template-columns: repeat(var(--columns), 1fr);
 }
@@ -72,6 +78,7 @@ body {
 }
 
 .cursor {
+    grid-area: auto;
     color: white;
     animation: cursor 250ms steps(2) 0s 12 alternate backwards;
 }
@@ -79,7 +86,6 @@ body {
 #scaleChar {
     display: none;
     position: fixed;
-    font-size: 2em;
     bottom: 0;
     right: 0;
     padding: 0;
@@ -100,7 +106,7 @@ body {
 
 .float-away span {
     position: relative;
-    display: inline-block;
+    display: block;
     transition: 1s;
     transform: translate3d(0px, 0px, 0px) rotate3d(0, 0, 0, 0deg);
 }
