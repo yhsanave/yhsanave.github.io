@@ -5,9 +5,16 @@ html {
     font-size: clamp(1em, calc(100vh/var(--ideal-rows)), 2em);
     font-family: 'Courier New', Courier, monospace;
     color: #666;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+
+    /* Prevent text selection */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    /* Hide Scrollbars */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    & ::-webkit-scrollbar {display: none;}
 }
 
 body {
