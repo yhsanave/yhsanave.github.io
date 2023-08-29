@@ -35,12 +35,14 @@ const funcChars = [
     {char: '&', func: () => toggleCharColors('&', ['#e28c00', '#eccd00', '#ffffff', '#62aedc', '#203856'])},
     {char: '%', func: () => toggleCharColors('%', ['#6B26D9', '#246EB9', '#4CB944', '#FFB30F', '#DB222A'])},
     {char: '*', func: () => shatter()},
+    {char: '+', func: () => twinkle()},
 ];
 const funcState = {
     background: '',
     text: '',
     textColors: [],
     shatter: false,
+    twinkle: false,
 }
 
 const minRows = links.length+2;
@@ -117,10 +119,16 @@ function buildGrid() {
 }
 
 function mutate(strength) {
+    if (funcState.twinkle) strength = Math.floor(strength / 5);
     let chars = _.sampleSize($('.magic-char'), strength);
     chars.forEach((c) => {
         $(c).text(randChar());
+        
         if (funcState.text) $(c).css('color', _.sample(funcState.textColors));
+        if (funcState.twinkle) {
+            $(c).css({'color': '#fff', 'transition': 'color 0.1s'});
+            setTimeout(() => {$(c).css({'color': '', 'transition': ''})}, 100);
+        }
     });
 }
 
@@ -190,7 +198,7 @@ function getShatterVars() {
 }
 
 // Func Char functions
-function clearFuncEffects(effects = ['background', 'text', 'shatter']) {
+function clearFuncEffects(effects = ['background', 'text', 'shatter', 'twinkle']) {
     // applyWrapperBackground
     if (effects.includes('background')) {
         let wrapper = $('.magic-wrapper');
@@ -211,6 +219,12 @@ function clearFuncEffects(effects = ['background', 'text', 'shatter']) {
         $('.shatter').removeClass('shatter');
         funcState.shatter = false;
     }
+
+    // twinkle
+    if (effects.includes('twinkle')) {
+        $('.magic-wrapper').removeClass('twinkle');
+        funcState.twinkle = false;
+    }
 }
 
 function applyWrapperBackground(char, background) {
@@ -224,7 +238,10 @@ function applyWrapperBackground(char, background) {
 }
 
 function toggleCharColors(char, colors) {
-    if (funcState.background) clearFuncEffects(['background']);
+    clearFuncEffects([
+        funcState.background ? 'background' : null,
+        funcState.twinkle ? 'twinkle' : null
+    ])
 
     let chars = $('.magic-char');
     if (funcState.text === char) {
@@ -249,6 +266,12 @@ async function shatter() {
     $('.char').toggleClass('shatter', !funcState.shatter);
     funcState.shatter = !funcState.shatter;
     applyShatter();
+}
+
+function twinkle() {
+    if (funcState.text) clearFuncEffects(['text']);
+    funcState.twinkle = !funcState.twinkle;
+    $('.magic-wrapper').toggleClass('twinkle', funcState.twinkle)
 }
 
 async function main() {
