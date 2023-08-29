@@ -16,6 +16,20 @@ body {
     height: 100vh;
 }
 
+.bg-text {
+    background-clip: text !important;
+    color: transparent;
+    
+    .magic-char {
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+.bg-gradient-flow {
+    background-size: 400% 400% !important;
+	animation: gradientFlow 10s linear 0s infinite normal forwards !important;
+}
+
 .magic-wrapper {
     position: absolute;
     top: 0;
@@ -26,6 +40,8 @@ body {
     justify-content: center;
     grid-template-rows: repeat(var(--rows), 1fr);
     grid-template-columns: repeat(var(--columns), 1fr);
+    background-clip: text;
+    transition: .5s;
 }
 
 #title {
@@ -35,11 +51,13 @@ body {
     grid-column: 1 / span 9;
     transition: 500ms;
     transform: translateY(0);
+    z-index: 2;
 }
 
 .char {
     grid-row: var(--row);
     grid-column: var(--col);
+    transition: .5s;
 }
 
 .magic-link {
@@ -49,6 +67,7 @@ body {
     cursor: pointer;
     transition: 200ms;
 }
+
 @media (hover: hover) {
     .magic-link:not(:hover) > .link-char {
         color: #aaa !important;
@@ -67,14 +86,27 @@ body {
 .sublink-4 {color: var(--text-color-4)}
 .sublink-5 {color: var(--text-color-5)}
 
-.magic-link:hover > .link-char {
+/* .magic-link:hover > .link-char {
     transform: scale(105%) translateY(-.1em);
-}
+} */
 
 .link-char {
     position: relative;
     text-decoration: underline dotted var(--line-color, currentcolor);
     transition: 200ms;
+    background: black;
+    z-index: 1;
+}
+
+.func-char {
+    background-color: #aaa;
+    color: black;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.func-char:hover {
+    background-color: white;
 }
 
 .cursor {
@@ -104,16 +136,13 @@ body {
     text-align-last: justify;    
 }
 
-.float-away span {
-    position: relative;
-    display: block;
-    transition: 1s;
-    transform: translate3d(0px, 0px, 0px) rotate3d(0, 0, 0, 0deg);
-}
-
-.float-away:hover span {
+.shatter {
     transition: transform 5s;
     transform: translate3d(var(--tx), var(--ty), var(--tz)) rotate3d(var(--rx), var(--ry), var(--rz), var(--ra));
+}
+
+.shake {
+    animation: shake 150ms ease-in-out 0s 4;
 }
 
 @media (hover: none) {
@@ -128,4 +157,20 @@ body {
 @keyframes wave {
     0% {transform: translateY(-.1em);}
     100% {transform: translateY(.1em);}
+}
+
+@keyframes gradientFlow {
+	0% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 100% 50%;
+	}
+}
+
+@keyframes shake {
+    0% {transform: translateX(0);}
+    25% {transform: translateX(15px);}
+    75% {transform: translateX(-15px);}
+    100% {transform: translateX(0);}
 }

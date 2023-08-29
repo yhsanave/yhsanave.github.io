@@ -27,6 +27,22 @@ const links = [
 ];
 const linkLength = (link) => link.text.join('').length;
 
+const funcChars = [
+    {char: 'X', func: () => clearFuncEffects()},
+    {char: '@', func: () => applyWrapperBackground('@', 'linear-gradient(80deg, #40e0d0, #ff8c00, #ff0080, #ff8c00, #40e0d0, #ff8c00, #ff0080)')},
+    {char: '$', func: () => applyWrapperBackground('$', 'linear-gradient(80deg, #00ff00, #00ffff, #0000ff, #00ffff, #00ff00, #00ffff, #0000ff)')},
+    {char: '^', func: () => applyWrapperBackground('^', 'linear-gradient(80deg, rgba(226,140,0,1) 0%, rgba(236,205,0,1) 8%, rgba(255,255,255,1) 16%, rgba(98,174,220,1) 24%, rgba(32,56,86,1) 32%, rgba(98,174,220,1) 41%, rgba(255,255,255,1) 50%, rgba(236,205,0,1) 59%, rgba(226,140,0,1) 68%, rgba(236,205,0,1) 76%, rgba(255,255,255,1) 84%, rgba(98,174,220,1) 92%, rgba(32,56,86,1) 100%)')},
+    {char: '&', func: () => toggleCharColors('&', ['#e28c00', '#eccd00', '#ffffff', '#62aedc', '#203856'])},
+    {char: '%', func: () => toggleCharColors('%', ['#6B26D9', '#246EB9', '#4CB944', '#FFB30F', '#DB222A'])},
+    {char: '*', func: () => shatter()},
+];
+const funcState = {
+    background: '',
+    text: '',
+    textColors: [],
+    shatter: false,
+}
+
 const minRows = links.length+2;
 const minColumns = Math.max(...links.map(l => linkLength(l)))+1;
 const magicGrid = {rows: minRows, columns: minColumns};
@@ -88,11 +104,23 @@ function buildGrid() {
             );
         }
     }
+
+    let funcPositions = _.sampleSize($('.magic-char'), funcChars.length);
+    funcChars.forEach((c, i) => {
+        $(funcPositions[i])
+        .removeClass('magic-char')
+        .addClass('func-char')
+        .text(c.char)
+        .on('click', c.func)
+    });
 }
 
 function mutate(strength) {
     let chars = _.sampleSize($('.magic-char'), strength);
-    chars.forEach((char) => char.innerHTML = randChar());
+    chars.forEach((c) => {
+        $(c).text(randChar());
+        if (funcState.text) $(c).css('color', _.sample(funcState.textColors));
+    });
 }
 
 async function animateIn() {
@@ -109,7 +137,7 @@ async function animateTitleIn() {
         $('.cursor').before(titleChar) ;
         await sleep(50);
     }
-    $('#title').css('text-align-last', 'justify');
+    // $('#title').css('text-align-last', 'justify');
 }
 
 async function animateMagicTextIn(speed, duration) {
@@ -129,40 +157,101 @@ function resize() {
     $('.char').show();
 }
 
-// Float away effect
-const floatAwayOptions = {
+// Shatter effect
+const shatterOptions = {
     translate: {min: -20, max: 20},
     rotate: {min: -1, max: 1},
     rotateAngle: {min: -45, max: 45}
 }
 
-$.fn.setFloatAwayVars = function(tx = 0, ty = 0, tz = 0, rx = 0, ry = 0, rz = 0, ra = 0) {
+$.fn.setShatterVars = function(tx = 0, ty = 0, tz = 0, rx = 0, ry = 0, rz = 0, ra = 0) {
     $(this).css({'--tx': `${tx}px`, '--ty': `${ty}px`, '--tz': `${tz}px`, '--rx': `${rx}`, '--ry': `${ry}`, '--rz': `${rz}`, '--ra': `${ra}deg`})
 }
 
-function floatAway() {
-    let elems = $('.float-away').children('span');
+function applyShatter() {
+    let elems = $('.shatter');
     Array.from(elems).forEach(element => {
-        $(element).setFloatAwayVars(...getFloatAwayVars());
+        $(element).setShatterVars(...getShatterVars());
     });
 };
 
-function getFloatAwayVars() {
+function getShatterVars() {
     return [
-        rand(floatAwayOptions.translate.max, floatAwayOptions.translate.min),
-        rand(floatAwayOptions.translate.max, floatAwayOptions.translate.min),
-        rand(floatAwayOptions.translate.max, floatAwayOptions.translate.min),
-        rand(floatAwayOptions.rotate.max, floatAwayOptions.rotate.min),
-        rand(floatAwayOptions.rotate.max, floatAwayOptions.rotate.min),
-        rand(floatAwayOptions.rotate.max, floatAwayOptions.rotate.min),
-        rand(floatAwayOptions.rotateAngle.max, floatAwayOptions.rotateAngle.min)
+        rand(shatterOptions.translate.max, shatterOptions.translate.min),
+        rand(shatterOptions.translate.max, shatterOptions.translate.min),
+        rand(shatterOptions.translate.max, shatterOptions.translate.min),
+        rand(shatterOptions.rotate.max, shatterOptions.rotate.min),
+        rand(shatterOptions.rotate.max, shatterOptions.rotate.min),
+        rand(shatterOptions.rotate.max, shatterOptions.rotate.min),
+        rand(shatterOptions.rotateAngle.max, shatterOptions.rotateAngle.min)
     ];
+}
+
+// Func Char functions
+function clearFuncEffects(effects = ['background', 'text', 'shatter']) {
+    // applyWrapperBackground
+    if (effects.includes('background')) {
+        let wrapper = $('.magic-wrapper');
+        wrapper.toggleClass('bg-text bg-gradient-flow', false);
+        wrapper.css('background', 'none');
+        funcState.background = '';
+    }
+
+    // toggleCharColors
+    if (effects.includes('text')) {
+        $('.magic-char').css('color', '')
+        funcState.text = '';
+        funcState.textColors = [];
+    }
+
+    // shatter
+    if (effects.includes('shatter')) {
+        $('.shatter').removeClass('shatter');
+        funcState.shatter = false;
+    }
+}
+
+function applyWrapperBackground(char, background) {
+    if (funcState.text) clearFuncEffects(['text']);
+
+    let wrapper = $('.magic-wrapper');
+    let toggleState = funcState.background === char;
+    wrapper.toggleClass('bg-text bg-gradient-flow', !toggleState);
+    wrapper.css('background', toggleState ? 'none' : background);
+    funcState.background = toggleState ? '' : char;
+}
+
+function toggleCharColors(char, colors) {
+    if (funcState.background) clearFuncEffects(['background']);
+
+    let chars = $('.magic-char');
+    if (funcState.text === char) {
+        $(chars).css('color', '')
+        funcState.text = '';
+        funcState.textColors = [];
+        return;
+    }
+    
+    Array.from(chars).forEach(c => {
+        $(c).css('color', _.sample(colors))
+    })
+
+    funcState.text = char;
+    funcState.textColors = colors;
+}
+
+async function shatter() {
+    $('.magic-wrapper').toggleClass('shake', !funcState.shatter);
+    setTimeout(() => {$('.magic-wrapper').removeClass('shake')}, 800);
+    
+    $('.char').toggleClass('shatter', !funcState.shatter);
+    funcState.shatter = !funcState.shatter;
+    applyShatter();
 }
 
 async function main() {
     buildGrid();
     await animateIn();
-    floatAway();
 }
 
 $(window).on('resize', _.debounce(resize, 50))
