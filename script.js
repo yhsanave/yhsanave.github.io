@@ -151,6 +151,7 @@ async function animateMagicTextIn(speed, duration) {
 }
 
 function resize() {
+    clearFuncEffects(['shatter']);
     $('.char').remove();
     $('.magic-link').remove();
     buildGrid();
