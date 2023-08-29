@@ -2,7 +2,7 @@
 
 html {
     background-color: black;
-    font-size: clamp(1em, calc(100vh/var(--ideal-rows)), 2em);
+    font-size: min(clamp(1em, calc(100vh/var(--ideal-rows)), 2em), clamp(1em, calc(1.6*100vw/var(--min-columns)), 2em));
     font-family: 'Courier New', Courier, monospace;
     color: #666;
 

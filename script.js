@@ -47,6 +47,7 @@ const minRows = links.length+2;
 const minColumns = Math.max(...links.map(l => linkLength(l)))+1;
 const magicGrid = {rows: minRows, columns: minColumns};
 $(':root').css('--ideal-rows', Math.floor(minRows*1.5)) // Try to scale the font so that there are ~50% more rows than links
+$(':root').css('--min-columns', minColumns);
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const rand = (max, min=0) => Math.random() * (max - min) + min;
