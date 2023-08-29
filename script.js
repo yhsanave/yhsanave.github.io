@@ -29,9 +29,9 @@ const linkLength = (link) => link.text.join('').length;
 
 const funcChars = [
     {char: 'X', func: () => clearFuncEffects()},
-    {char: '@', func: () => applyWrapperBackground('@', 'linear-gradient(80deg, #40e0d0, #ff8c00, #ff0080, #ff8c00, #40e0d0, #ff8c00, #ff0080)')},
-    {char: '$', func: () => applyWrapperBackground('$', 'linear-gradient(80deg, #00ff00, #00ffff, #0000ff, #00ffff, #00ff00, #00ffff, #0000ff)')},
-    {char: '^', func: () => applyWrapperBackground('^', 'linear-gradient(80deg, rgba(226,140,0,1) 0%, rgba(236,205,0,1) 8%, rgba(255,255,255,1) 16%, rgba(98,174,220,1) 24%, rgba(32,56,86,1) 32%, rgba(98,174,220,1) 41%, rgba(255,255,255,1) 50%, rgba(236,205,0,1) 59%, rgba(226,140,0,1) 68%, rgba(236,205,0,1) 76%, rgba(255,255,255,1) 84%, rgba(98,174,220,1) 92%, rgba(32,56,86,1) 100%)')},
+    {char: '@', func: () => applyWrapperBackground('@', 'linear-gradient(80deg, #40e0d0, #ff8c00, #ff0080, #ff8c00, #40e0d0)')},
+    {char: '$', func: () => applyWrapperBackground('$', 'linear-gradient(80deg, #00ff00, #00ffff, #0000ff, #00ffff, #00ff00)')},
+    {char: '^', func: () => applyWrapperBackground('^', 'linear-gradient(80deg, #e28c00, #eccd00, #ffffff, #62aedc, #203856, #62aedc, #ffffff, #eccd00, #e28c00)')},
     {char: '&', func: () => toggleCharColors('&', ['#e28c00', '#eccd00', '#ffffff', '#62aedc', '#203856'])},
     {char: '%', func: () => toggleCharColors('%', ['#6B26D9', '#246EB9', '#4CB944', '#FFB30F', '#DB222A'])},
     {char: '*', func: () => shatter()},

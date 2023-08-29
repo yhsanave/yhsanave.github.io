@@ -33,7 +33,7 @@ body {
 }
 
 .bg-gradient-flow {
-    background-size: 400% 400% !important;
+    background-size: 300vw 100%;
 	animation: gradientFlow 10s linear 0s infinite normal forwards !important;
 }
 
@@ -168,10 +168,10 @@ body {
 
 @keyframes gradientFlow {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0vw 50%;
 	}
 	100% {
-		background-position: 100% 50%;
+		background-position: 100vw 50%;
 	}
 }
 
