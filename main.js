@@ -32,10 +32,13 @@ const funcChars = [
     {char: '@', func: () => applyWrapperBackground('@', 'linear-gradient(80deg, #40e0d0, #ff8c00, #ff0080, #ff8c00, #40e0d0)')},
     {char: '$', func: () => applyWrapperBackground('$', 'linear-gradient(80deg, #00ff00, #00ffff, #0000ff, #00ffff, #00ff00)')},
     {char: '^', func: () => applyWrapperBackground('^', 'linear-gradient(80deg, #e28c00, #eccd00, #ffffff, #62aedc, #203856, #62aedc, #ffffff, #eccd00, #e28c00)')},
+    {char: '|', func: () => applyWrapperBackground('|', 'linear-gradient(80deg, rgba(25,25,25,1) 10%, rgba(0,255,0,1) 85%, rgba(25,25,25,1) 90%)')},
     {char: '&', func: () => toggleCharColors('&', ['#e28c00', '#eccd00', '#ffffff', '#62aedc', '#203856'])},
     {char: '%', func: () => toggleCharColors('%', ['#6B26D9', '#246EB9', '#4CB944', '#FFB30F', '#DB222A'])},
     {char: '*', func: () => shatter()},
     {char: '+', func: () => twinkle()},
+    {char: 'V', func: () => rainFall('V', '#FFFFFF','#0044FF', '#000044')},
+    {char: '#', func: () => rainFall('#', '#00FF00','#00DD00', '#001100')},
 ];
 const funcState = {
     background: '',
@@ -43,7 +46,16 @@ const funcState = {
     textColors: [],
     shatter: false,
     twinkle: false,
+    rain: '',
+    rainColors: {head: '', tail: '', bg: ''}
 }
+
+// Rain effect vars
+const rainFrequency = 250; // Time between new raindrops spawning in ms
+const rainSpeed = 75; // Delay between each step of a raindrop falling down in ms
+const rainWorkers = [];
+var rainInterval;
+$(':root').css('--rain-speed', `${rainSpeed}ms`)
 
 const minRows = links.length+2;
 const minColumns = Math.max(...links.map(l => linkLength(l)))+1;
@@ -137,7 +149,7 @@ async function animateIn() {
     await animateTitleIn();
     await sleep(500);
     $('.cursor').hide();
-    await animateMagicTextIn(5, 1000);
+    await animateMagicTextIn(magicGrid.rows*magicGrid.columns/100, 1000);
 }
 
 async function animateTitleIn() {
@@ -146,7 +158,6 @@ async function animateTitleIn() {
         $('.cursor').before(titleChar) ;
         await sleep(50);
     }
-    // $('#title').css('text-align-last', 'justify');
 }
 
 async function animateMagicTextIn(speed, duration) {
@@ -198,12 +209,12 @@ function getShatterVars() {
 }
 
 // Func Char functions
-function clearFuncEffects(effects = ['background', 'text', 'shatter', 'twinkle']) {
+function clearFuncEffects(effects = ['background', 'text', 'shatter', 'twinkle', 'rain']) {
     // applyWrapperBackground
     if (effects.includes('background')) {
         let wrapper = $('.magic-wrapper');
         wrapper.toggleClass('bg-text bg-gradient-flow', false);
-        wrapper.css('background', 'none');
+        wrapper.css('background', '');
         funcState.background = '';
     }
 
@@ -225,10 +236,20 @@ function clearFuncEffects(effects = ['background', 'text', 'shatter', 'twinkle']
         $('.magic-wrapper').removeClass('twinkle');
         funcState.twinkle = false;
     }
+
+    // rainFall
+    if (effects.includes('rain')) {
+        $('.rain').removeClass('rain');
+        $('.drop').removeClass('drop');
+        clearInterval(rainInterval);
+        rainWorkers.forEach(w => w.terminate());
+        funcState.rain = '';
+        funcState.rainColors = {head: '', tail: '', bg: ''};
+    }
 }
 
 function applyWrapperBackground(char, background) {
-    if (funcState.text) clearFuncEffects(['text']);
+    clearFuncEffects(['text', 'rain']);
 
     let wrapper = $('.magic-wrapper');
     let toggleState = funcState.background === char;
@@ -238,10 +259,7 @@ function applyWrapperBackground(char, background) {
 }
 
 function toggleCharColors(char, colors) {
-    clearFuncEffects([
-        funcState.background ? 'background' : null,
-        funcState.twinkle ? 'twinkle' : null
-    ])
+    clearFuncEffects(['background', 'twinkle', 'rain'])
 
     let chars = $('.magic-char');
     if (funcState.text === char) {
@@ -259,7 +277,7 @@ function toggleCharColors(char, colors) {
     funcState.textColors = colors;
 }
 
-async function shatter() {
+function shatter() {
     $('.magic-wrapper').toggleClass('shake', !funcState.shatter);
     setTimeout(() => {$('.magic-wrapper').removeClass('shake')}, 800);
     
@@ -269,9 +287,40 @@ async function shatter() {
 }
 
 function twinkle() {
-    if (funcState.text) clearFuncEffects(['text']);
+    clearFuncEffects(['text', 'rain']);
     funcState.twinkle = !funcState.twinkle;
     $('.magic-wrapper').toggleClass('twinkle', funcState.twinkle)
+}
+
+function rainFall(char, headColor, tailColor, bgColor) {
+    let state = funcState.rain !== char;
+    if (!state) {
+        clearFuncEffects(['rain']);
+        return;
+    }
+    
+    clearFuncEffects(['background', 'text', 'twinkle']);
+    clearInterval(rainInterval);
+    $(':root').css({
+        '--drop-head': headColor,
+        '--drop-tail': tailColor,
+        '--drop-bg': bgColor
+    });
+    $('.magic-wrapper').toggleClass('rain', state)
+    rainInterval = setInterval(spawnRainDrop, rainFrequency);
+    funcState.rain = char;
+}
+
+function spawnRainDrop() {
+    let worker = new Worker('rainWorker.js');
+    worker.onmessage = applyRainDrop;
+    worker.postMessage({rows: magicGrid.rows, col: Math.floor(rand(magicGrid.columns, 1)), speed: rainSpeed});
+    rainWorkers.push(worker);
+}
+
+function applyRainDrop(e) {
+    let char = $(`.magic-char[data-row=${e.data.row}][data-col=${e.data.col}]`).removeClass('drop').addClass('drop');
+    setTimeout(() => $(char).removeClass('drop'), 1000);
 }
 
 async function main() {

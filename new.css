@@ -161,6 +161,14 @@ body {
     color: #333;
 }
 
+.rain {
+    color: var(--drop-bg);
+}
+
+.drop {
+    animation: rainDrop 1s linear 0s 1 normal forwards;
+}
+
 @media (hover: none) {
     .magic-link {opacity: .75;}
 }
@@ -189,4 +197,10 @@ body {
     25% {transform: translateX(15px);}
     75% {transform: translateX(-15px);}
     100% {transform: translateX(0);}
+}
+
+@keyframes rainDrop {
+    0% {color: var(--drop-head)}
+    20% {color: var(--drop-tail)}
+    100% {color: var(--drop-bg)}    
 }
