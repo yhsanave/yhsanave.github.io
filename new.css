@@ -157,10 +157,6 @@ body {
     transition: color .75s;
 }
 
-.twinkle .shatter {
-    transition: transform 5s, color .75s !important;
-}
-
 .twinkle:not(.bg-text) {
     color: #333;
 }
