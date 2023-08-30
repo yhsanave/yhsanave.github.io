@@ -212,7 +212,7 @@ function getShatterVars() {
 }
 
 // Func Char functions
-function clearFuncEffects(effects = ['background', 'text', 'shatter', 'twinkle', 'rain']) {
+function clearFuncEffects(effects = ['background', 'text', 'shatter', 'twinkle', 'rain', 'apple']) {
     // applyWrapperBackground
     if (effects.includes('background')) {
         let wrapper = $('.magic-wrapper');
