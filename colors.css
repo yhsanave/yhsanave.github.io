@@ -69,7 +69,12 @@
 }
 
 #link-prsk {
-    --text-color-0: #00cdba;
+    --line-color: #00cdba;
+    --text-color-0: #4455DD;
+    --text-color-1: #6CCB20;
+    --text-color-2: #EE1166;
+    --text-color-3: #FF9900;
+    --text-color-4: #884499;
 }
 
 #link-switch {

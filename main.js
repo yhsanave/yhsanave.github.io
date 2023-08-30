@@ -22,7 +22,7 @@ const links = [
     {id: 'tumblr', href: 'https://tumblr.yhsanave.me/', text: ['Tumblr']},
     {id: 'soundcloud', href: 'https://soundcloud.yhsanave.me/', text: ['SoundCloud']},
     {id: 'osu', href: 'https://osu.ppy.sh/users/7559714', text: ['osu!']},
-    {id: 'prsk', copyText: '367762770000629763', text: ['PRSK:367762770000629763']},
+    {id: 'prsk', copyText: '367762770000629763', text: ['PRSK:', '3677', '62770', '0006', '29763']},
     {id: 'switch', copyText: 'SW-0834-7237-5116', text: ['Switch:', 'SW-0834-7237-5116']}
 ];
 const linkLength = (link) => link.text.join('').length;
@@ -84,7 +84,7 @@ function buildLink(link, row, col) {
         charSpans.forEach((sp, i) => {
             $elem.append($(sp)
                 .addClass(`char link-char sublink-${index}`)
-                .css({'--row': row, '--col': col+i+(link.text[index-1]?.length ?? 0)})
+                .css({'--row': row, '--col': col+i+(link.text.slice(0, index).join('').length)})
                 .prop({'data-row': row, 'data-col': col})
                 .hide()
             );
