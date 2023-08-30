@@ -39,6 +39,7 @@ const funcChars = [
     {char: '+', func: () => twinkle()},
     {char: 'V', func: () => rainFall('V', '#FFFFFF','#0044FF', '#000044')},
     {char: '#', func: () => rainFall('#', '#00FF00','#00DD00', '#001100')},
+    {char: 'a', func: () => apple()}
 ];
 const funcState = {
     background: '',
@@ -47,13 +48,15 @@ const funcState = {
     shatter: false,
     twinkle: false,
     rain: '',
-    rainColors: {head: '', tail: '', bg: ''}
+    rainColors: {head: '', tail: '', bg: ''},
+    apple: false,
 }
 
 // Rain effect vars
 const rainFrequency = 250; // Time between new raindrops spawning in ms
 const rainSpeed = 75; // Delay between each step of a raindrop falling down in ms
-const rainWorkers = [];
+const rainWorker = new Worker('rainWorker.js');
+rainWorker.onmessage = applyRainDrop;
 var rainInterval;
 $(':root').css('--rain-speed', `${rainSpeed}ms`)
 
@@ -242,34 +245,42 @@ function clearFuncEffects(effects = ['background', 'text', 'shatter', 'twinkle',
         $('.rain').removeClass('rain');
         $('.drop').removeClass('drop');
         clearInterval(rainInterval);
-        rainWorkers.forEach(w => w.terminate());
         funcState.rain = '';
         funcState.rainColors = {head: '', tail: '', bg: ''};
+    }
+
+    // apple
+    if (effects.includes('apple')) {
+        $('.magic-wrapper').removeClass('apple');
+        funcState.apple = false;
     }
 }
 
 function applyWrapperBackground(char, background) {
-    clearFuncEffects(['text', 'rain']);
+    let state = funcState.background === char;
+    if (state) {
+        clearFuncEffects(['background']);
+        return
+    }
+    
+    clearFuncEffects(['text', 'rain', 'apple']);
 
     let wrapper = $('.magic-wrapper');
-    let toggleState = funcState.background === char;
-    wrapper.toggleClass('bg-text bg-gradient-flow', !toggleState);
-    wrapper.css('background', toggleState ? 'none' : background);
-    funcState.background = toggleState ? '' : char;
+    wrapper.toggleClass('bg-text bg-gradient-flow', !state);
+    wrapper.css('background', state ? 'none' : background);
+    funcState.background = state ? '' : char;
 }
 
 function toggleCharColors(char, colors) {
-    clearFuncEffects(['background', 'twinkle', 'rain'])
-
-    let chars = $('.magic-char');
-    if (funcState.text === char) {
-        $(chars).css('color', '')
-        funcState.text = '';
-        funcState.textColors = [];
+    let state = funcState.text === char;
+    if (state) {
+        clearFuncEffects(['text']);
         return;
     }
+
+    clearFuncEffects(['background', 'twinkle', 'rain', 'apple'])
     
-    Array.from(chars).forEach(c => {
+    Array.from($('.magic-char')).forEach(c => {
         $(c).css('color', _.sample(colors))
     })
 
@@ -287,7 +298,12 @@ function shatter() {
 }
 
 function twinkle() {
-    clearFuncEffects(['text', 'rain']);
+    if (funcState.twinkle) {
+        clearFuncEffects(['twinkle']);
+        return;
+    }
+
+    clearFuncEffects(['text', 'rain', 'apple']);
     funcState.twinkle = !funcState.twinkle;
     $('.magic-wrapper').toggleClass('twinkle', funcState.twinkle)
 }
@@ -299,7 +315,7 @@ function rainFall(char, headColor, tailColor, bgColor) {
         return;
     }
     
-    clearFuncEffects(['background', 'text', 'twinkle']);
+    clearFuncEffects(['background', 'text', 'twinkle', 'apple']);
     clearInterval(rainInterval);
     $(':root').css({
         '--drop-head': headColor,
@@ -312,15 +328,24 @@ function rainFall(char, headColor, tailColor, bgColor) {
 }
 
 function spawnRainDrop() {
-    let worker = new Worker('rainWorker.js');
-    worker.onmessage = applyRainDrop;
-    worker.postMessage({rows: magicGrid.rows, col: Math.floor(rand(magicGrid.columns, 1)), speed: rainSpeed});
-    rainWorkers.push(worker);
+    rainWorker.postMessage({rows: magicGrid.rows, col: Math.floor(rand(magicGrid.columns, 1)), speed: rainSpeed});
 }
 
 function applyRainDrop(e) {
-    let char = $(`.magic-char[data-row=${e.data.row}][data-col=${e.data.col}]`).removeClass('drop').addClass('drop');
+    if (!funcState.rain) return;
+    let char = $(`.magic-char[data-row=${e.data.row}][data-col=${e.data.col}]`).addClass('drop');
     setTimeout(() => $(char).removeClass('drop'), 1000);
+}
+
+function apple() {
+    if (funcState.apple) {
+        clearFuncEffects(['apple']);
+        return;
+    }
+
+    clearFuncEffects(['background', 'text', 'twinkle', 'rain']);
+    $('.magic-wrapper').addClass('apple bg-text');
+    funcState.apple = true;
 }
 
 async function main() {

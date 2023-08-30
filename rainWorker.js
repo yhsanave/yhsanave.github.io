@@ -3,7 +3,6 @@ onmessage = async function (e) {
         await new Promise(r => setTimeout(r, e.data.speed)) // Delay
         moveDrop(i, e.data.col);
     }
-    self.close();
 }
 
 function moveDrop(row, col) {

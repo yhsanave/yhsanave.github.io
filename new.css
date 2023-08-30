@@ -169,6 +169,11 @@ body {
     animation: rainDrop 1s linear 0s 1 normal forwards;
 }
 
+.apple {
+    background-image: url('./assets/apple.webp');
+    background-size: cover;
+}
+
 @media (hover: none) {
     .magic-link {opacity: .75;}
 }
