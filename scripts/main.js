@@ -55,7 +55,7 @@ const funcState = {
 // Rain effect vars
 const rainFrequency = 250; // Time between new raindrops spawning in ms
 const rainSpeed = 75; // Delay between each step of a raindrop falling down in ms
-const rainWorker = new Worker('rainWorker.js');
+const rainWorker = new Worker('scripts/rainWorker.js');
 rainWorker.onmessage = applyRainDrop;
 var rainInterval;
 $(':root').css('--rain-speed', `${rainSpeed}ms`)

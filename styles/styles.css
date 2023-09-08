@@ -1,0 +1,212 @@
+@import url(colors.css);
+@media (scripting: enabled) {
+    html {
+        background-color: black;
+        font-size: min(clamp(1em, calc(100vh/var(--ideal-rows)), 2em), clamp(1em, calc(1.6*100vw/var(--min-columns)), 2em));
+        font-family: 'Courier New', Courier, monospace;
+        color: #666;
+
+        /* Prevent text selection */
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        
+        /* Hide Scrollbars */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        & ::-webkit-scrollbar {display: none;}
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+        height: 100vh;
+    }
+
+    .bg-text {
+        background-clip: text !important;
+        color: transparent !important;
+        
+        .magic-char {
+            -webkit-text-fill-color: transparent;
+            color: transparent !important;
+        }
+    }
+
+    .bg-gradient-flow {
+        background-size: 300vw 100%;
+        animation: gradientFlow 10s linear 0s infinite normal forwards !important;
+    }
+
+    .magic-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: grid;
+        justify-content: center;
+        grid-template-rows: repeat(var(--rows), 1fr);
+        grid-template-columns: repeat(var(--columns), 1fr);
+        background-clip: text;
+        transition: .5s;
+    }
+
+    #title {
+        display: contents;
+        font-weight: bold;
+        grid-row: 1;
+        grid-column: 1 / span 9;
+        transition: 500ms;
+        transform: translateY(0);
+        z-index: 2;
+    }
+
+    .char {
+        grid-row: var(--row);
+        grid-column: var(--col);
+        transition: color .5s;
+    }
+
+    .magic-link {
+        display: contents;
+        position: relative;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 200ms;
+    }
+
+    @media (hover: hover) {
+        .magic-link:not(:hover) > .link-char {
+            color: #aaa !important;
+            text-decoration-color: #aaa !important;
+        }
+
+        #title:not(:hover) > span {
+            color: white !important;
+        }
+    }
+
+    .sublink-0 {color: var(--text-color-0)}
+    .sublink-1 {color: var(--text-color-1)}
+    .sublink-2 {color: var(--text-color-2)}
+    .sublink-3 {color: var(--text-color-3)}
+    .sublink-4 {color: var(--text-color-4)}
+    .sublink-5 {color: var(--text-color-5)}
+
+    /* .magic-link:hover > .link-char {
+        transform: scale(105%) translateY(-.1em);
+    } */
+
+    .link-char {
+        position: relative;
+        text-decoration: underline dotted var(--line-color, currentcolor);
+        transition: 200ms;
+        background: black;
+        z-index: 1;
+    }
+
+    .func-char {
+        background-color: #aaa;
+        color: black;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .func-char:hover {
+        background-color: white;
+    }
+
+    .cursor {
+        grid-area: auto;
+        color: white;
+        animation: cursor 250ms steps(2) 0s 12 alternate backwards;
+    }
+
+    #scaleChar {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    #title.wave:hover span {
+        width: calc(100% / 9);
+    }
+
+    .wave:hover span {
+        position: relative;
+        display: inline-block;
+        animation: wave .75s ease-in-out infinite alternate;
+        animation-delay: calc(.1s * var(--i));
+        text-align-last: justify;    
+    }
+
+    .shatter {
+        transition: transform 5s, color .5s;
+        transform: translate3d(var(--tx), var(--ty), var(--tz)) rotate3d(var(--rx), var(--ry), var(--rz), var(--ra));
+    }
+
+    .shake {
+        animation: shake 150ms ease-in-out 0s 4;
+    }
+
+    .twinkle .magic-char:not(.shatter) {
+        transition: color .75s;
+    }
+
+    .twinkle:not(.bg-text) {
+        color: #333;
+    }
+
+    .rain {
+        color: var(--drop-bg);
+    }
+
+    .drop {
+        animation: rainDrop 1s linear 0s 1 normal forwards;
+    }
+
+    .apple {
+        background-image: url('/assets/apple.webp');
+        background-size: cover;
+    }
+
+    @media (hover: none) {
+        .magic-link {opacity: .75;}
+    }
+
+    @keyframes cursor {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    @keyframes wave {
+        0% {transform: translateY(-.1em);}
+        100% {transform: translateY(.1em);}
+    }
+
+    @keyframes gradientFlow {
+        0% {
+            background-position: 0vw 50%;
+        }
+        100% {
+            background-position: 100vw 50%;
+        }
+    }
+
+    @keyframes shake {
+        0% {transform: translateX(0);}
+        25% {transform: translateX(15px);}
+        75% {transform: translateX(-15px);}
+        100% {transform: translateX(0);}
+    }
+
+    @keyframes rainDrop {
+        0% {color: var(--drop-head)}
+        20% {color: var(--drop-tail)}
+        100% {color: var(--drop-bg)}    
+    }
+}
