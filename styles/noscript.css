@@ -33,12 +33,13 @@ body {
     left: 0;
     margin: 0;
     padding: 0;
-    opacity: .1;
+    opacity: .15;
     width: 100vw;
     text-align: justify;
     text-justify: inter-word;
     word-wrap: break-word;
     word-break: break-all;
+    font-size: 1.5em;
     z-index: -1;
 
     /* Prevent text selection */
@@ -67,7 +68,6 @@ body {
 
 .link {
     font-weight: bold;
-    cursor: pointer;
     transition: 200ms;
     text-decoration: underline var(--line-color, currentcolor);
     font-size: clamp(1em, min(calc(100vh/20), calc(1.6*98vw/var(--len))), 2em);
