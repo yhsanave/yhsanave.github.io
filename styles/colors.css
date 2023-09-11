@@ -1,11 +1,11 @@
 #link-discord {
-    --text-color-0: #5865F2;
     --line-color: #FFFFFF;
+    --text-color-0: #5865F2;
 }
 
 #link-twitter {
-    --text-color-0: #00acee;
     --line-color: #FFFFFF;
+    --text-color-0: #00acee;
 }
 
 #link-youtube {
@@ -31,14 +31,17 @@
 }
 
 #link-github {
+    --line-color: #6e5494;
     --text-color-0: #6e5494;
 }
 
 #link-mail {
+    --line-color: yellow;
     --text-color-0: yellow;
 }
 
 #link-venmo {
+    --line-color: #008cff;
     --text-color-0: #008cff;
 }
 
