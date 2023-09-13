@@ -35,10 +35,10 @@ const funcChars = [
     {char: '|', func: () => applyWrapperBackground('|', 'linear-gradient(80deg, rgba(25,25,25,1) 10%, rgba(0,255,0,1) 85%, rgba(25,25,25,1) 90%)')},
     {char: '&', func: () => toggleCharColors('&', ['#e28c00', '#eccd00', '#ffffff', '#62aedc', '#203856'])},
     {char: '%', func: () => toggleCharColors('%', ['#6B26D9', '#246EB9', '#4CB944', '#FFB30F', '#DB222A'])},
-    {char: '*', func: () => shatter()},
-    {char: '+', func: () => twinkle()},
     {char: 'V', func: () => rainFall('V', '#FFFFFF','#0044FF', '#000044')},
     {char: '#', func: () => rainFall('#', '#00FF00','#00DD00', '#001100')},
+    {char: '*', func: () => shatter()},
+    {char: '+', func: () => twinkle()},
     {char: 'a', func: () => apple()}
 ];
 const funcState = {
@@ -52,7 +52,7 @@ const funcState = {
     apple: false,
 }
 
-// Rain effect vars
+// Rain Vars
 const rainFrequency = 250; // Time between new raindrops spawning in ms
 const rainSpeed = 75; // Delay between each step of a raindrop falling down in ms
 const rainWorker = new Worker('scripts/rainWorker.js');
@@ -60,20 +60,22 @@ rainWorker.onmessage = applyRainDrop;
 var rainInterval;
 $(':root').css('--rain-speed', `${rainSpeed}ms`)
 
+// Grid Vars
 const minRows = links.length+2;
 const minColumns = Math.max(...links.map(l => linkLength(l)))+1;
 const magicGrid = {rows: minRows, columns: minColumns};
 $(':root').css('--ideal-rows', Math.floor(minRows*1.5)) // Try to scale the font so that there are ~50% more rows than links
 $(':root').css('--min-columns', minColumns);
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-const rand = (max, min=0) => Math.random() * (max - min) + min;
-const spanify = (str) => Array.from(str).map(c => $('<span>').text(c));
-
 const mutationFrequency = 100; // Magic text update frequency in milliseconds
 const mutationFactor = .02; // Percent of cells to update each cycle
 const getMutations = () => Math.floor(magicGrid.rows * magicGrid.columns * mutationFactor);
 const updateInterval = setInterval(() => mutate(getMutations()), mutationFrequency);
+
+// Util functions
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rand = (max, min=0) => Math.random() * (max - min) + min;
+const spanify = (str) => Array.from(str).map(c => $('<span>').text(c));
 
 function buildLink(link, row, col) {   
     let $elem = $(`<a id="link-${link.id}" class="magic-link"></a>`);
