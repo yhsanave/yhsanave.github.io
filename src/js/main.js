@@ -253,7 +253,7 @@ function clearFuncEffects(effects = ['background', 'text', 'shatter', 'twinkle',
 
     // apple
     if (effects.includes('apple')) {
-        $('.magic-wrapper').removeClass('apple');
+        $('.magic-wrapper').removeClass('apple bg-text');
         funcState.apple = false;
     }
 }
