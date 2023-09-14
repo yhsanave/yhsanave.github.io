@@ -79,9 +79,10 @@ body {
         color: #aaa !important;
         text-decoration-color: #aaa !important;
 
-        span {
-            color: #aaa !important;
-        }
+    }
+    
+    .link:not(:hover) > span {
+        color: #aaa !important;
     }
 
     #title:not(:hover) > span {

@@ -14,8 +14,9 @@ html:not(.no-js) {
     /* Hide Scrollbars */
     scrollbar-width: none;
     -ms-overflow-style: none;
-    & ::-webkit-scrollbar {display: none;}
 }
+
+html:not(.no-js)::-webkit-scrollbar {display: none;}
 
 body:not(.no-js) {
     padding: 0;
@@ -27,10 +28,11 @@ body:not(.no-js) {
     background-clip: text !important;
     color: transparent !important;
     
-    .magic-char {
-        -webkit-text-fill-color: transparent;
-        color: transparent !important;
-    }
+}
+
+.bg-text > .magic-char {
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
 }
 
 .bg-gradient-flow {
