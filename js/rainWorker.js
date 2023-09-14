@@ -1,0 +1,1 @@
+function moveDrop(o,e){self.postMessage({col:e,row:o})}onmessage=async function(e){for(let o=1;o<=e.data.rows;o++)await new Promise(o=>setTimeout(o,e.data.speed)),moveDrop(o,e.data.col)};
