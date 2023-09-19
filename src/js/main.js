@@ -10,6 +10,7 @@ const randChar = () => characters.charAt(Math.floor(rand(characters.length)));
 const links = [
     {id: 'discord', href: 'https://discord.com/users/195694396115648512', text: ['Discord']},
     {id: 'twitter', href: 'https://twitter.yhsanave.me', text: ['Twitter']},
+    {id: 'bsky', href: 'https://bsky.app/profile/yhsanave.me', text: ['BlueSky']},
     {id: 'youtube', href: 'https://youtube.yhsanave.me/', text: ['You','Tube']},
     {id: 'anilist', href: 'https://anilist.yhsanave.me/', text: ['Ani','List']},
     {id: 'libib', href: 'https://yhsanave.libib.com/', text: ['Manga']},

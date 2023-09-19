@@ -8,6 +8,11 @@
     --text-color-0: #00acee;
 }
 
+#link-bsky {
+    --line-color: #FFFFFF;
+    --text-color-0: #00acee;
+}
+
 #link-youtube {
     --line-color: #FFFFFF;
     --text-color-0: #FFFFFF;
