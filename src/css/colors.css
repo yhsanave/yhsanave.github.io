@@ -3,6 +3,11 @@
     --text-color-0: #5865F2;
 }
 
+#link-twitch {
+    --line-color: #FFFFFF;
+    --text-color-0: #8956FB;
+}
+
 #link-twitter {
     --line-color: #FFFFFF;
     --text-color-0: #00acee;

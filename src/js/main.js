@@ -10,8 +10,8 @@ const randChar = () => characters.charAt(Math.floor(rand(characters.length)));
 const links = [
     {id: 'discord', href: 'https://discord.com/users/195694396115648512', text: ['Discord']},
     {id: 'twitter', href: 'https://twitter.yhsanave.me', text: ['Twitter']},
-    {id: 'bsky', href: 'https://bsky.app/profile/yhsanave.me', text: ['BlueSky']},
     {id: 'youtube', href: 'https://youtube.yhsanave.me/', text: ['You','Tube']},
+    {id: 'twitch', href: 'https://twitch.yhsanave.me/', text: ['Twitch']},
     {id: 'anilist', href: 'https://anilist.yhsanave.me/', text: ['Ani','List']},
     {id: 'libib', href: 'https://yhsanave.libib.com/', text: ['Manga']},
     {id: 'steam', href: 'https://steamcommunity.com/id/yhsanave/', text: ['Steam']},
@@ -19,6 +19,7 @@ const links = [
     {id: 'mail', href: 'mailto:yhsanave@yhsanave.me', text: ['Email']},
     {id: 'venmo', href: 'https://venmo.yhsanave.me/', text: ['Venmo']},
     {id: 'paypal', href: 'https://paypal.yhsanave.me/', text: ['Pay','Pal']},
+    {id: 'bsky', href: 'https://bsky.app/profile/yhsanave.me', text: ['BlueSky']},
     {id: 'mastodon', href: 'https://mastodon.yhsanave.me/', text: ['Mastodon']},
     {id: 'tumblr', href: 'https://tumblr.yhsanave.me/', text: ['Tumblr']},
     {id: 'soundcloud', href: 'https://soundcloud.yhsanave.me/', text: ['SoundCloud']},
